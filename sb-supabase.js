@@ -65,6 +65,12 @@ window.SB_DB = (function () {
       });
       if (error) throw error;
     },
+    async mercadoUpdate(item_id, fields) {
+      const { error } = await client
+        .from("mercado")
+        .upsert({ item_id, ...fields, updated_at: new Date().toISOString() });
+      if (error) throw error;
+    },
     async mercadoRemove(item_id) {
       const { error } = await client.from("mercado").delete().eq("item_id", item_id);
       if (error) throw error;

@@ -7,14 +7,27 @@ function Mercado() {
   const groups = MSB.mercadoList;                 // grupos base (del código)
   const [bought, setBought] = mkS({});            // { id: true }
   const [custom, setCustom] = mkS([]);            // ítems añadidos: { id, name, price, grp }
+  const [overrides, setOverrides] = mkS({});      // base editado: { id: {name, price} }
   const [ready, setReady] = mkS(false);
   const [dbErr, setDbErr] = mkS(false);
   const [adding, setAdding] = mkS(false);
   const [form, setForm] = mkS({ name: "", price: "", grp: groups[0].group });
   const [saving, setSaving] = mkS(false);
+  const [editing, setEditing] = mkS(null);        // id en edición
+  const [editForm, setEditForm] = mkS({ name: "", price: "" });
 
-  // lista combinada (base + personalizados) para totales
-  const itemsOfGroup = (g) => g.items.concat(custom.filter(c => c.grp === g.group));
+  // aplica sobrescritura a un ítem base
+  const baseEff = (it) => {
+    const o = overrides[it.id];
+    return {
+      id: it.id, custom: false,
+      name: o && o.name != null ? o.name : it.name,
+      price: o && o.price != null ? Number(o.price) : it.price,
+    };
+  };
+  const itemsOfGroup = (g) =>
+    g.items.map(baseEff).concat(custom.filter(c => c.grp === g.group).map(c => ({ ...c, custom: true })));
+
   const allItems = groups.flatMap(itemsOfGroup);
   const totalMoney = allItems.reduce((a, i) => a + Number(i.price), 0);
   const checked = allItems.filter(i => bought[i.id]);
@@ -25,12 +38,13 @@ function Mercado() {
     if (!window.SB_DB) { setDbErr(true); setReady(true); return; }
     try {
       const rows = await window.SB_DB.mercadoList();
-      const map = {}, cust = [];
+      const map = {}, cust = [], ov = {};
       rows.forEach(r => {
         if (r.bought) map[r.item_id] = true;
         if (r.custom) cust.push({ id: r.item_id, name: r.name, price: Number(r.price) || 0, grp: r.grp });
+        else if (r.name != null || r.price != null) ov[r.item_id] = { name: r.name, price: r.price };
       });
-      setBought(map); setCustom(cust); setDbErr(false);
+      setBought(map); setCustom(cust); setOverrides(ov); setDbErr(false);
     } catch (e) { setDbErr(true); }
     finally { setReady(true); }
   };
@@ -67,10 +81,24 @@ function Mercado() {
   };
 
   const removeItem = async (id) => {
-    setCustom(c => c.filter(x => x.id !== id));   // optimista
+    setCustom(c => c.filter(x => x.id !== id));
     if (!window.SB_DB) return;
     try { await window.SB_DB.mercadoRemove(id); } catch (e) { setDbErr(true); load(); }
   };
+
+  const startEdit = (it) => { setEditing(it.id); setEditForm({ name: it.name, price: String(it.price) }); };
+  const saveEdit = async () => {
+    const name = editForm.name.trim();
+    const price = Number(String(editForm.price).replace(/[^\d]/g, ""));
+    if (!name || !(price > 0)) return;
+    if (!window.SB_DB) { setDbErr(true); return; }
+    const id = editing;
+    setEditing(null);
+    try { await window.SB_DB.mercadoUpdate(id, { name, price }); await load(); }
+    catch (e) { setDbErr(true); }
+  };
+
+  const inputStyle = { border: "1px solid var(--line)", borderRadius: 10, padding: "9px 10px", fontFamily: "inherit", fontSize: 14, background: "#fff", color: "var(--ink)" };
 
   return (
     <section id="mercado" className="section-pad">
@@ -78,7 +106,7 @@ function Mercado() {
         <div className="reveal" style={{ marginBottom: 32 }}>
           <div className="eyebrow">Combustible del viaje</div>
           <h2 className="sec-title">Mercado & snacks</h2>
-          <p className="sec-sub">Lista de compras para 3 días, enfocada en desayunos y cenas. Presupuesto de {mfmt(MSB.mercadoBudget)} para las cinco. Chequea lo que ya compraron — se guarda y sincroniza solo.{dbErr && <b style={{ color: "var(--coral-deep)" }}> · (conectando…)</b>}</p>
+          <p className="sec-sub">Lista de compras para 3 días, enfocada en desayunos y cenas. Presupuesto de {mfmt(MSB.mercadoBudget)} para las cinco. Chequea lo que ya compraron, edita precios o agrega ítems — se guarda y sincroniza solo.{dbErr && <b style={{ color: "var(--coral-deep)" }}> · (conectando…)</b>}</p>
         </div>
 
         {/* progreso */}
@@ -111,11 +139,10 @@ function Mercado() {
               <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--coral-deep)", marginBottom: 12 }}>Nuevo ítem</div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Nombre (ej. Cerveza, Toallas)"
-                  style={{ flex: "2 1 200px", minWidth: 0, border: "1px solid var(--line)", borderRadius: 10, padding: "11px 12px", fontFamily: "inherit", fontSize: 14, background: "#fff", color: "var(--ink)" }} />
+                  style={{ ...inputStyle, flex: "2 1 200px", minWidth: 0 }} />
                 <input value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value.replace(/[^\d]/g, "") }))} inputMode="numeric" placeholder="$0"
-                  style={{ flex: "1 1 110px", width: 110, textAlign: "right", border: "1px solid var(--line)", borderRadius: 10, padding: "11px 12px", fontFamily: "inherit", fontSize: 14, background: "#fff", color: "var(--ink)" }} />
-                <select value={form.grp} onChange={e => setForm(f => ({ ...f, grp: e.target.value }))}
-                  style={{ flex: "1 1 150px", border: "1px solid var(--line)", borderRadius: 10, padding: "11px 12px", fontFamily: "inherit", fontSize: 14, background: "#fff", color: "var(--ink)" }}>
+                  style={{ ...inputStyle, flex: "1 1 110px", width: 110, textAlign: "right" }} />
+                <select value={form.grp} onChange={e => setForm(f => ({ ...f, grp: e.target.value }))} style={{ ...inputStyle, flex: "1 1 150px" }}>
                   {groups.map(g => <option key={g.group} value={g.group}>{g.group}</option>)}
                 </select>
               </div>
@@ -139,10 +166,24 @@ function Mercado() {
                   <span className="money" style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink-faint)" }}>{gDone}/{gItems.length}</span>
                 </div>
                 {gItems.map(it => {
+                  if (editing === it.id) {
+                    return (
+                      <div key={it.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px" }}>
+                        <input value={editForm.name} onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))} autoFocus
+                          style={{ ...inputStyle, flex: 1, minWidth: 0 }} />
+                        <input value={editForm.price} onChange={e => setEditForm(f => ({ ...f, price: e.target.value.replace(/[^\d]/g, "") }))} inputMode="numeric"
+                          style={{ ...inputStyle, width: 86, textAlign: "right" }} />
+                        <button onClick={saveEdit} aria-label="Guardar" title="Guardar"
+                          style={{ border: "none", background: "var(--coral)", color: "#fff", cursor: "pointer", borderRadius: 8, width: 32, height: 32, fontSize: 15, flex: "0 0 auto" }}>✓</button>
+                        <button onClick={() => setEditing(null)} aria-label="Cancelar" title="Cancelar"
+                          style={{ border: "none", background: "transparent", color: "var(--ink-faint)", cursor: "pointer", fontSize: 18, lineHeight: 1, padding: "0 2px", flex: "0 0 auto" }}>×</button>
+                      </div>
+                    );
+                  }
                   const on = !!bought[it.id];
                   return (
                     <div key={it.id} style={{ display: "flex", alignItems: "center", borderRadius: 12, background: on ? "rgba(255,90,44,.05)" : "transparent" }}>
-                      <label style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", cursor: "pointer", flex: 1, minWidth: 0 }}>
+                      <label style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 6px 11px 14px", cursor: "pointer", flex: 1, minWidth: 0 }}>
                         <input type="checkbox" checked={on} onChange={() => toggle(it.id)}
                           style={{ width: 19, height: 19, accentColor: "#ff5a2c", cursor: "pointer", flex: "0 0 auto" }} />
                         <span style={{ flex: 1, minWidth: 0, fontSize: 14.5, fontWeight: 600, color: on ? "var(--ink-faint)" : "var(--ink)",
@@ -150,9 +191,11 @@ function Mercado() {
                         <span className="money" style={{ fontSize: 13.5, fontWeight: 700, color: on ? "var(--ink-faint)" : "var(--ink-soft)",
                           textDecoration: on ? "line-through" : "none" }}>{mfmt(Number(it.price))}</span>
                       </label>
+                      <button onClick={() => startEdit(it)} aria-label="Editar" title="Editar"
+                        style={{ border: "none", background: "transparent", cursor: "pointer", color: "var(--ink-faint)", fontSize: 14, lineHeight: 1, padding: "0 6px" }}>✎</button>
                       {it.custom && (
                         <button onClick={() => removeItem(it.id)} aria-label="Quitar" title="Quitar ítem"
-                          style={{ border: "none", background: "transparent", cursor: "pointer", color: "var(--ink-faint)", fontSize: 18, lineHeight: 1, padding: "0 12px 0 4px" }}>×</button>
+                          style={{ border: "none", background: "transparent", cursor: "pointer", color: "var(--ink-faint)", fontSize: 18, lineHeight: 1, padding: "0 12px 0 2px" }}>×</button>
                       )}
                     </div>
                   );
