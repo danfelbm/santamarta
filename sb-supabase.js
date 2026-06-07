@@ -55,6 +55,20 @@ window.SB_DB = (function () {
         .upsert({ item_id, bought, updated_at: new Date().toISOString() });
       if (error) throw error;
     },
+    async mercadoAdd(item) {
+      const id = "c-" + (window.crypto && window.crypto.randomUUID
+        ? window.crypto.randomUUID()
+        : Date.now() + "-" + Math.round(Math.random() * 1e6));
+      const { error } = await client.from("mercado").insert({
+        item_id: id, bought: false, custom: true,
+        name: item.name, price: item.price, grp: item.grp,
+      });
+      if (error) throw error;
+    },
+    async mercadoRemove(item_id) {
+      const { error } = await client.from("mercado").delete().eq("item_id", item_id);
+      if (error) throw error;
+    },
     mercadoOnChange(cb) {
       try {
         const ch = client

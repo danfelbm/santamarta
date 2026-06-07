@@ -95,7 +95,7 @@ function Hero() {
         </div>
 
         <h1 className="hero-word" style={{ margin: 0, fontFamily: "'Syne', system-ui, sans-serif", fontWeight: 800, color: "var(--coral)", letterSpacing: "-.04em", lineHeight: .82,
-          fontSize: "clamp(78px, 19vw, 230px)", textShadow: "0 2px 40px rgba(255,90,44,.25)", animationDelay: ".05s" }}>
+          fontSize: "clamp(58px, 14vw, 160px)", textShadow: "0 2px 40px rgba(255,90,44,.25)", animationDelay: ".05s" }}>
           SANTA
         </h1>
         <div className="hero-word" style={{ marginTop: -2, fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontWeight: 500, fontStyle: "italic", color: "var(--ink)", fontSize: "clamp(28px,6vw,58px)", letterSpacing: "-.01em", animationDelay: ".12s" }}>

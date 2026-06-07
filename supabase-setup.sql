@@ -35,10 +35,20 @@ end $$;
 -- Checklist de mercado (sección "Mercado & snacks")
 -- ============================================================
 create table if not exists public.mercado (
-  item_id    text primary key,             -- id del ítem (ej. m-huevos), definido en sb-data.js
+  item_id    text primary key,             -- id del ítem (ej. m-huevos) o c-<uuid> si es personalizado
   bought     boolean not null default false,
+  name       text,                         -- solo para ítems personalizados
+  price      bigint,                        -- solo para ítems personalizados
+  grp        text,                          -- grupo del ítem personalizado
+  custom     boolean not null default false,
   updated_at timestamptz not null default now()
 );
+
+-- por si la tabla ya existía sin estas columnas:
+alter table public.mercado add column if not exists name   text;
+alter table public.mercado add column if not exists price  bigint;
+alter table public.mercado add column if not exists grp    text;
+alter table public.mercado add column if not exists custom boolean not null default false;
 
 alter table public.mercado enable row level security;
 
