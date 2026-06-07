@@ -11,14 +11,15 @@ const GRAD = {
 /* ========================= CREW ========================= */
 function Crew() {
   // individual budget snapshot per traveler (mirrors central budget, all rubros on)
-  const rows = [
-    { k: "Vuelos", v: 410000 },
-    { k: "Tayrona", v: 49000 },
-    { k: "Transporte", v: 80000 },
-    { k: "Mercado", v: 54000 },
-    { k: "Colchón", v: 50000 },
+  const bolsas = (p) => [
+    { k: "Estadía", v: 175500 },
+    { k: "Vuelos", v: p.vuelo },
+    { k: "Tayrona", v: 40000 },
+    { k: "Transporte", v: 50000 },
+    { k: "Comida", v: 44000 },
   ];
-  const total = rows.reduce((a, r) => a + r.v, 0);
+  const totalOf = (p) => bolsas(p).reduce((a, r) => a + r.v, 0);
+  const groupTotal = SB2.crew.reduce((a, p) => a + totalOf(p), 0);
   return (
     <section id="crew" className="section-pad">
       <div className="wrap">
@@ -42,7 +43,7 @@ function Crew() {
               </div>
 
               <div style={{ marginTop: 18, padding: "14px 16px", borderRadius: 14, background: "var(--paper-2)", border: "1px solid var(--line-soft)" }}>
-                {rows.map((r, i) => (
+                {bolsas(p).map((r, i) => (
                   <div key={i} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "5px 0", color: "var(--ink-soft)" }}>
                     <span>{r.k}</span>
                     <span className="money" style={{ fontWeight: 600, color: "var(--ink)" }}>{fmt2(r.v)}</span>
@@ -51,13 +52,13 @@ function Crew() {
                 <div style={{ height: 1, background: "var(--line)", margin: "8px 0" }} />
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--ink-soft)" }}>Total</span>
-                  <span className="money" style={{ fontWeight: 900, fontSize: 18, color: "var(--coral-deep)" }}>{fmt2(total)}</span>
+                  <span className="money" style={{ fontWeight: 900, fontSize: 18, color: "var(--coral-deep)" }}>{fmt2(totalOf(p))}</span>
                 </div>
               </div>
 
               <div style={{ marginTop: 14, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-                <div style={{ fontSize: 11.5, color: "var(--ink-faint)" }}>Silla <b style={{ color: "var(--ink)" }}>{p.seatOut}</b> · PNR <b className="money" style={{ color: "var(--ink)" }}>{p.pnr}</b></div>
-                <button className="btn btn-coral" style={{ padding: "9px 14px", fontSize: 11 }}>PDF ↓</button>
+                <div style={{ fontSize: 11.5, color: "var(--ink-faint)" }}>Reserva <b className="money" style={{ color: "var(--ink)" }}>{p.pnr}</b></div>
+                <a className="btn btn-coral" href={encodeURI(p.pdf)} download={"Tiquete Avianca - " + p.nick + ".pdf"} style={{ padding: "9px 14px", fontSize: 11, textDecoration: "none" }}>PDF ↓</a>
               </div>
             </div>
           ))}
@@ -65,9 +66,9 @@ function Crew() {
           {/* group total tile */}
           <div className="card" style={{ padding: 24, display: "flex", flexDirection: "column", justifyContent: "center", background: "linear-gradient(150deg,#ff7a4d,#e23c12)", color: "#fff", border: "none" }}>
             <div style={{ fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 800, opacity: .92 }}>Suma del grupo</div>
-            <div className="money" style={{ fontSize: 40, fontWeight: 900, letterSpacing: "-.02em", marginTop: 8 }}>{fmt2(total * 5)}</div>
-            <div style={{ fontSize: 13, fontWeight: 600, opacity: .92, marginTop: 6 }}>5 viajeras · {fmt2(total)} c/u · COP</div>
-            <div style={{ marginTop: 18, fontSize: 12.5, lineHeight: 1.6, opacity: .9 }}>Hospedaje en Reserva del Mar 2 cubierto por la base previa. Sin sorpresas.</div>
+            <div className="money" style={{ fontSize: 40, fontWeight: 900, letterSpacing: "-.02em", marginTop: 8 }}>{fmt2(groupTotal)}</div>
+            <div style={{ fontSize: 13, fontWeight: 600, opacity: .92, marginTop: 6 }}>5 viajeras · COP</div>
+            <div style={{ marginTop: 18, fontSize: 12.5, lineHeight: 1.6, opacity: .9 }}>Incluye estadía, vuelos, entrada al Tayrona, transporte y mercado. Melanie paga menos en vuelo.</div>
           </div>
         </div>
       </div>

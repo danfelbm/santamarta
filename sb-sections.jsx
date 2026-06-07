@@ -47,7 +47,7 @@ function Switch({ on, onClick, disabled }) {
 
 /* ========================= HERO ========================= */
 function Hero() {
-  const target = new Date("2026-06-21T06:25:00-05:00").getTime();
+  const target = new Date("2026-06-21T19:00:00-05:00").getTime();
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
     const i = setInterval(() => setNow(Date.now()), 1000);
@@ -145,7 +145,7 @@ function Budget({ active, setActive }) {
         <div className="reveal" style={{ marginBottom: 40 }}>
           <div className="eyebrow">El número que importa</div>
           <h2 className="sec-title">Presupuesto central</h2>
-          <p className="sec-sub">Todo el costo del viaje en un solo lugar. Activa o desactiva cada rubro para ver al instante cuánto pone cada una y el total del grupo.</p>
+          <p className="sec-sub">Todo el costo del viaje en un solo lugar, con cifras reales de los tiquetes. Activa o desactiva cada rubro para ver al instante cuánto pone cada una y el total del grupo. El vuelo estándar es {fmt(256650)}; Melanie paga {fmt(194290)}.</p>
         </div>
 
         <div className="reveal budget-grid">
@@ -274,8 +274,8 @@ function BoardingPass({ p, flights }) {
       </div>
       <div style={{ padding: "14px 18px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
         <div style={{ display: "flex", gap: 18 }}>
-          <div><div style={{ fontSize: 9.5, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--ink-faint)", fontWeight: 700 }}>Silla</div><div style={{ fontWeight: 800, fontSize: 15 }}>{p.seatOut}</div></div>
           <div><div style={{ fontSize: 9.5, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--ink-faint)", fontWeight: 700 }}>Reserva</div><div className="money" style={{ fontWeight: 800, fontSize: 15 }}>{p.pnr}</div></div>
+          <div><div style={{ fontSize: 9.5, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--ink-faint)", fontWeight: 700 }}>Tiquete</div><div className="money" style={{ fontWeight: 800, fontSize: 15 }}>···{p.ticket.slice(-4)}</div></div>
         </div>
         <div style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 30 }}>
           {Array.from({ length: 18 }).map((_, i) => (
@@ -283,6 +283,12 @@ function BoardingPass({ p, flights }) {
           ))}
         </div>
       </div>
+      <a href={encodeURI(p.pdf)} download={"Tiquete Avianca - " + p.nick + ".pdf"}
+        style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, margin: "0 14px 16px", padding: "11px",
+          borderRadius: 12, background: "linear-gradient(180deg,#ff5a2c,#e23c12)", color: "#fff", textDecoration: "none",
+          fontWeight: 800, fontSize: 12, letterSpacing: ".06em", textTransform: "uppercase", boxShadow: "0 6px 16px rgba(226,60,18,.28)" }}>
+        Descargar tiquete ↓
+      </a>
     </div>
   );
 }
@@ -303,11 +309,12 @@ function Tiquetes() {
           <div className="tk-head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap", padding: "16px 24px", borderBottom: "1px solid var(--line-soft)", background: "rgba(255,90,44,.04)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
               <span style={{ fontWeight: 900, color: "var(--coral)", letterSpacing: ".04em", fontSize: 17 }}>AVIANCA</span>
-              <span style={{ fontSize: 12, color: "var(--ink-soft)", fontWeight: 600 }}>Reserva grupal · 5 pasajeras</span>
+              <span style={{ fontSize: 12, color: "var(--ink-soft)", fontWeight: 600 }}>Reserva grupal <b className="money" style={{ color: "var(--ink)" }}>{f.bookingRef}</b> · 5 pasajeras</span>
             </div>
             <div className="money tk-price" style={{ textAlign: "right" }}>
               <div style={{ fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--ink-faint)", fontWeight: 700 }}>Ida y vuelta / persona</div>
               <div style={{ fontWeight: 900, fontSize: 22, color: "var(--coral-deep)" }}>{fmt(f.perPerson)}</div>
+              <div style={{ fontSize: 11, color: "var(--ink-faint)", fontWeight: 600 }}>incluye tasas {fmt(f.taxes)}</div>
             </div>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
