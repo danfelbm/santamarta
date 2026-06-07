@@ -29,3 +29,31 @@ begin
   alter publication supabase_realtime add table public.gastos;
 exception when duplicate_object then null;
 end $$;
+
+
+-- ============================================================
+-- Checklist de mercado (sección "Mercado & snacks")
+-- ============================================================
+create table if not exists public.mercado (
+  item_id    text primary key,             -- id del ítem (ej. m-huevos), definido en sb-data.js
+  bought     boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.mercado enable row level security;
+
+drop policy if exists "mercado_select" on public.mercado;
+drop policy if exists "mercado_insert" on public.mercado;
+drop policy if exists "mercado_update" on public.mercado;
+drop policy if exists "mercado_delete" on public.mercado;
+
+create policy "mercado_select" on public.mercado for select using (true);
+create policy "mercado_insert" on public.mercado for insert with check (true);
+create policy "mercado_update" on public.mercado for update using (true) with check (true);
+create policy "mercado_delete" on public.mercado for delete using (true);
+
+do $$
+begin
+  alter publication supabase_realtime add table public.mercado;
+exception when duplicate_object then null;
+end $$;

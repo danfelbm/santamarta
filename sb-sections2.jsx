@@ -134,28 +134,7 @@ function Logistica() {
   );
 }
 
-/* ========================= MERCADO ========================= */
-function Mercado() {
-  return (
-    <section id="mercado" className="section-pad">
-      <div className="wrap">
-        <div className="reveal" style={{ marginBottom: 36 }}>
-          <div className="eyebrow">Combustible del viaje</div>
-          <h2 className="sec-title">Mercado & snacks</h2>
-          <p className="sec-sub">Presupuesto grupal de {fmt2(SB2.mercadoTotal)} ({fmt2(SB2.mercadoTotal / 5)} por persona). De la hidratación del amanecer a los munchies de la madrugada.</p>
-        </div>
-        <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 16 }}>
-          {SB2.mercado.map((m, i) => (
-            <div key={i} className="card" style={{ padding: 22, display: "flex", flexDirection: "column", gap: 12 }}>
-              <span style={{ alignSelf: "flex-start", fontSize: 10.5, fontWeight: 800, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--coral-deep)", background: "rgba(255,90,44,.09)", padding: "5px 11px", borderRadius: 99 }}>{m.tag}</span>
-              <div style={{ fontSize: 15, color: "var(--ink)", fontWeight: 500, lineHeight: 1.5 }}>{m.items}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+/* MERCADO vive ahora en sb-mercado.jsx (checklist persistente con Supabase) */
 
 /* ========================= FOOTER ========================= */
 function Footer() {
@@ -178,4 +157,4 @@ function Footer() {
   );
 }
 
-Object.assign(window, { Itinerary, Hospedaje, Logistica, Mercado, Footer });
+Object.assign(window, { Itinerary, Hospedaje, Logistica, Footer });

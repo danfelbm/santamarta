@@ -42,5 +42,29 @@ window.SB_DB = (function () {
         return () => {};
       }
     },
+
+    // ---- Mercado (checklist persistente) ----
+    async mercadoList() {
+      const { data, error } = await client.from("mercado").select("*");
+      if (error) throw error;
+      return data || [];
+    },
+    async mercadoSet(item_id, bought) {
+      const { error } = await client
+        .from("mercado")
+        .upsert({ item_id, bought, updated_at: new Date().toISOString() });
+      if (error) throw error;
+    },
+    mercadoOnChange(cb) {
+      try {
+        const ch = client
+          .channel("mercado-rt")
+          .on("postgres_changes", { event: "*", schema: "public", table: "mercado" }, cb)
+          .subscribe();
+        return () => client.removeChannel(ch);
+      } catch (e) {
+        return () => {};
+      }
+    },
   };
 })();
