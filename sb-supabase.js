@@ -50,6 +50,8 @@ window.SB_DB = (function () {
       return data || [];
     },
     async mercadoSet(item_id, bought) {
+      // Upsert envía SOLO estas columnas → PostgREST hace ON CONFLICT DO UPDATE
+      // únicamente sobre ellas, así que name/price (override o ítem custom) se preservan.
       const { error } = await client
         .from("mercado")
         .upsert({ item_id, bought, updated_at: new Date().toISOString() });

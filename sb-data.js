@@ -95,32 +95,32 @@ window.SB = (function () {
   ];
   const transportTotal = transport.reduce((a, t) => a + t.cost, 0);
 
-  // ---- Mercado: lista de compras para 3 días (desayunos & cenas) · $270.000 ----
-  const mercadoBudget = 270000;
+  // ---- Mercado: lista de compras para 3 días (desayunos & cenas) · $220.000 ----
+  const mercadoBudget = 220000;
   const mercadoList = [
     { group: "Desayunos", items: [
-      { id: "m-huevos",      name: "Huevos (panal × 30)",            price: 15000 },
-      { id: "m-pan",         name: "Pan tajado + arepas",            price: 14000 },
-      { id: "m-cafe",        name: "Café molido 500 g",              price: 18000 },
-      { id: "m-leche",       name: "Leche / leche de almendras (2 L)", price: 13000 },
-      { id: "m-fruta",       name: "Fruta (banano, papaya, mango)",  price: 20000 },
-      { id: "m-queso",       name: "Queso costeño 500 g",            price: 15000 },
-      { id: "m-mantequilla", name: "Mantequilla + mermelada",        price: 11000 },
+      { id: "m-huevos",      name: "Huevos (panal × 30)",            price: 14000 },
+      { id: "m-pan",         name: "Pan tajado + arepas",            price: 12000 },
+      { id: "m-cafe",        name: "Café molido 500 g",              price: 16000 },
+      { id: "m-leche",       name: "Leche / leche de almendras (2 L)", price: 11000 },
+      { id: "m-fruta",       name: "Fruta (banano, papaya, mango)",  price: 14000 },
+      { id: "m-queso",       name: "Queso costeño 500 g",            price: 12000 },
+      { id: "m-mantequilla", name: "Mantequilla + mermelada",        price: 9000  },
     ]},
     { group: "Cenas", items: [
-      { id: "m-pasta",    name: "Pasta (2 paq.) + salsa de tomate", price: 16000 },
-      { id: "m-pollo",    name: "Pollo 1.5 kg",                     price: 24000 },
-      { id: "m-arroz",    name: "Arroz 2 lb",                       price: 8000  },
-      { id: "m-verduras", name: "Verduras / ensalada",              price: 18000 },
-      { id: "m-aguacate", name: "Aguacate + plátano",               price: 12000 },
-      { id: "m-alinos",   name: "Aliños (cebolla, tomate, ajo, limón)", price: 12000 },
-      { id: "m-atun",     name: "Atún (3 latas)",                   price: 14000 },
+      { id: "m-pasta",    name: "Pasta (2 paq.) + salsa de tomate", price: 13000 },
+      { id: "m-pollo",    name: "Pollo 1.5 kg",                     price: 22000 },
+      { id: "m-arroz",    name: "Arroz 2 lb",                       price: 7000  },
+      { id: "m-verduras", name: "Verduras / ensalada",              price: 14000 },
+      { id: "m-aguacate", name: "Aguacate + plátano",               price: 9000  },
+      { id: "m-alinos",   name: "Aliños (cebolla, tomate, ajo, limón)", price: 10000 },
+      { id: "m-atun",     name: "Atún (3 latas)",                   price: 13000 },
     ]},
     { group: "Básicos & bebidas", items: [
-      { id: "m-agua",   name: "Agua (2 pacas)",                  price: 18000 },
-      { id: "m-aceite", name: "Aceite + sal + panela",           price: 14000 },
-      { id: "m-snacks", name: "Snacks (papas, galletas, chocolate)", price: 16000 },
-      { id: "m-hielo",  name: "Hielo + sueros / electrolitos",   price: 12000 },
+      { id: "m-agua",   name: "Agua (2 pacas)",                  price: 15000 },
+      { id: "m-aceite", name: "Aceite + sal + panela",           price: 11000 },
+      { id: "m-snacks", name: "Snacks (papas, galletas, chocolate)", price: 11000 },
+      { id: "m-hielo",  name: "Hielo + sueros / electrolitos",   price: 7000  },
     ]},
   ];
 

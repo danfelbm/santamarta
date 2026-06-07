@@ -135,7 +135,7 @@ function Budget({ active, setActive }) {
   const aPP = useCountUp(perPerson);
   const aGroup = useCountUp(group);
 
-  const palette = { vuelos: "#ff5a2c", hospedaje: "#7fb0dd", tayrona: "#ffb15a", transporte: "#ff6f91", mercado: "#e2a04d", colchon: "#b08968" };
+  const palette = { vuelos: "#ff5a2c", hospedaje: "#7fb0dd", tayrona: "#ffb15a", transporte: "#ff6f91", mercado: "#e2a04d" };
   const incl = cats.filter(c => active[c.key] && c.group > 0);
   const totalForBar = incl.reduce((a, c) => a + c.group, 0) || 1;
 
@@ -193,10 +193,8 @@ function Budget({ active, setActive }) {
                   <div style={{ fontSize: 12.5, color: "var(--ink-soft)", marginTop: 2 }}>{c.detail}</div>
                 </div>
                 <div className="money" style={{ textAlign: "right", flex: "0 0 auto" }}>
-                  <div style={{ fontWeight: 800, fontSize: 15, color: c.included ? "var(--blue)" : "var(--coral-deep)" }}>
-                    {c.included ? "Incluido" : fmt(c.perPerson)}
-                  </div>
-                  <div style={{ fontSize: 10.5, color: "var(--ink-faint)", fontWeight: 600 }}>{c.included ? "hospedaje" : "/ persona"}</div>
+                  <div style={{ fontWeight: 800, fontSize: 15, color: "var(--coral-deep)" }}>{fmt(c.perPerson)}</div>
+                  <div style={{ fontSize: 10.5, color: "var(--ink-faint)", fontWeight: 600 }}>/ persona</div>
                 </div>
                 <Switch on={!!active[c.key]} onClick={() => setActive(p => ({ ...p, [c.key]: !p[c.key] }))} />
               </div>

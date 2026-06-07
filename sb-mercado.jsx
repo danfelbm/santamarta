@@ -82,6 +82,7 @@ function Mercado() {
 
   const removeItem = async (id) => {
     setCustom(c => c.filter(x => x.id !== id));
+    setBought(p => { const n = { ...p }; delete n[id]; return n; });
     if (!window.SB_DB) return;
     try { await window.SB_DB.mercadoRemove(id); } catch (e) { setDbErr(true); load(); }
   };
@@ -106,7 +107,7 @@ function Mercado() {
         <div className="reveal" style={{ marginBottom: 32 }}>
           <div className="eyebrow">Combustible del viaje</div>
           <h2 className="sec-title">Mercado & snacks</h2>
-          <p className="sec-sub">Lista de compras para 3 días, enfocada en desayunos y cenas. Presupuesto de {mfmt(MSB.mercadoBudget)} para las cinco. Chequea lo que ya compraron, edita precios o agrega ítems — se guarda y sincroniza solo.{dbErr && <b style={{ color: "var(--coral-deep)" }}> · (conectando…)</b>}</p>
+          <p className="sec-sub">Lista de compras para 3 días, enfocada en desayunos y cenas. Presupuesto de {mfmt(MSB.mercadoBudget)} para las cinco. Chequea lo que ya compraron, edita precios o agrega ítems — se guarda y sincroniza solo.{dbErr && <b style={{ color: "var(--coral-deep)" }}> · (sin conexión a la base)</b>}</p>
         </div>
 
         {/* progreso */}

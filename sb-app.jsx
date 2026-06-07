@@ -61,4 +61,38 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+/* ---------- PIN de acceso (compuerta suave, no es seguridad real) ---------- */
+const GATE_PIN = "159753456";
+function Gate({ children }) {
+  const [ok, setOk] = uS(() => { try { return localStorage.getItem("sb_gate") === GATE_PIN; } catch (e) { return false; } });
+  const [val, setVal] = uS("");
+  const [err, setErr] = uS(false);
+  if (ok) return children;
+  const submit = (e) => {
+    e.preventDefault();
+    if (val.trim() === GATE_PIN) {
+      try { localStorage.setItem("sb_gate", GATE_PIN); } catch (e) {}
+      setOk(true);
+    } else { setErr(true); }
+  };
+  return (
+    <div style={{ position: "fixed", inset: 0, zIndex: 5000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24,
+      background: "radial-gradient(45% 45% at 25% 25%, rgba(255,170,120,.9), transparent 60%), radial-gradient(40% 45% at 80% 20%, rgba(127,176,221,.7), transparent 62%), radial-gradient(46% 46% at 72% 78%, rgba(255,90,44,.8), transparent 60%), var(--paper)" }}>
+      <form onSubmit={submit} style={{ width: "100%", maxWidth: 360, background: "rgba(255,255,255,.7)", backdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,.8)",
+        borderRadius: "var(--r-lg)", padding: "34px 28px", boxShadow: "var(--shadow-lg)", textAlign: "center" }}>
+        <div style={{ fontFamily: "'Syne', system-ui, sans-serif", fontWeight: 800, fontSize: 34, color: "var(--coral)", letterSpacing: "-.02em", lineHeight: 1 }}>SANTA</div>
+        <div style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontStyle: "italic", fontWeight: 500, fontSize: 18, color: "var(--ink)", marginTop: 2 }}>&amp; beyond</div>
+        <div style={{ marginTop: 18, fontSize: 13, fontWeight: 600, color: "var(--ink-soft)" }}>Ingresa el PIN de acceso</div>
+        <input type="password" inputMode="numeric" autoFocus value={val} aria-label="PIN"
+          onChange={(e) => { setVal(e.target.value); setErr(false); }}
+          style={{ width: "100%", boxSizing: "border-box", marginTop: 12, textAlign: "center", letterSpacing: ".3em",
+            border: "1px solid " + (err ? "var(--coral-deep)" : "var(--line)"), borderRadius: 12, padding: "13px 14px",
+            fontFamily: "inherit", fontSize: 18, background: "#fff", color: "var(--ink)" }} />
+        {err && <div style={{ marginTop: 8, fontSize: 12.5, color: "var(--coral-deep)", fontWeight: 600 }}>PIN incorrecto</div>}
+        <button type="submit" className="btn btn-coral" style={{ width: "100%", justifyContent: "center", marginTop: 14, padding: "13px" }}>Entrar</button>
+      </form>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Gate><App /></Gate>);

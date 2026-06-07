@@ -223,7 +223,7 @@ function Crew() {
         <div className="reveal" style={{ marginBottom: 40 }}>
           <div className="eyebrow">Las protagonistas</div>
           <h2 className="sec-title">The Crew</h2>
-          <p className="sec-sub">Cinco viajeras, un mismo plan. Cada una tiene sus bolsas de presupuesto: registra gastos y mira el saldo bajar en vivo. {dbErr && <b style={{ color: "var(--coral-deep)" }}>· (Conectando con la base…)</b>}</p>
+          <p className="sec-sub">Cinco viajeras, un mismo plan. Cada una tiene sus bolsas de presupuesto: registra gastos y mira el saldo bajar en vivo. {dbErr && <b style={{ color: "var(--coral-deep)" }}>· (sin conexión a la base)</b>}</p>
         </div>
 
         <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr))", gap: 18 }}>
