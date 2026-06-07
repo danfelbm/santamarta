@@ -8,73 +8,7 @@ const GRAD = {
   amber: "linear-gradient(135deg,#ffcf8a,#f0992f)",
 };
 
-/* ========================= CREW ========================= */
-function Crew() {
-  // individual budget snapshot per traveler (mirrors central budget, all rubros on)
-  const bolsas = (p) => [
-    { k: "Estadía", v: 175500 },
-    { k: "Vuelos", v: p.vuelo },
-    { k: "Tayrona", v: 40000 },
-    { k: "Transporte", v: 50000 },
-    { k: "Comida", v: 44000 },
-  ];
-  const totalOf = (p) => bolsas(p).reduce((a, r) => a + r.v, 0);
-  const groupTotal = SB2.crew.reduce((a, p) => a + totalOf(p), 0);
-  return (
-    <section id="crew" className="section-pad">
-      <div className="wrap">
-        <div className="reveal" style={{ marginBottom: 40 }}>
-          <div className="eyebrow">Las protagonistas</div>
-          <h2 className="sec-title">The Crew</h2>
-          <p className="sec-sub">Cinco viajeras, un mismo plan. Cada perfil con su presupuesto individual y su tiquete de Avianca asignado.</p>
-        </div>
-
-        <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr))", gap: 18 }}>
-          {SB2.crew.map(p => (
-            <div key={p.id} className="card" style={{ padding: 22, display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{ width: 52, height: 52, borderRadius: 16, background: GRAD[p.color], display: "grid", placeItems: "center", color: "#fff", fontWeight: 800, fontSize: 18, boxShadow: "0 8px 20px rgba(226,60,18,.18)" }}>
-                  {p.nick.slice(0, 2).toUpperCase()}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 800, fontSize: 19, color: "var(--coral)", letterSpacing: "-.01em" }}>{p.nick}</div>
-                  <div style={{ fontSize: 11.5, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: ".06em", marginTop: 2 }}>{p.full}</div>
-                </div>
-              </div>
-
-              <div style={{ marginTop: 18, padding: "14px 16px", borderRadius: 14, background: "var(--paper-2)", border: "1px solid var(--line-soft)" }}>
-                {bolsas(p).map((r, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "5px 0", color: "var(--ink-soft)" }}>
-                    <span>{r.k}</span>
-                    <span className="money" style={{ fontWeight: 600, color: "var(--ink)" }}>{fmt2(r.v)}</span>
-                  </div>
-                ))}
-                <div style={{ height: 1, background: "var(--line)", margin: "8px 0" }} />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--ink-soft)" }}>Total</span>
-                  <span className="money" style={{ fontWeight: 900, fontSize: 18, color: "var(--coral-deep)" }}>{fmt2(totalOf(p))}</span>
-                </div>
-              </div>
-
-              <div style={{ marginTop: 14, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-                <div style={{ fontSize: 11.5, color: "var(--ink-faint)" }}>Reserva <b className="money" style={{ color: "var(--ink)" }}>{p.pnr}</b></div>
-                <a className="btn btn-coral" href={encodeURI(p.pdf)} download={"Tiquete Avianca - " + p.nick + ".pdf"} style={{ padding: "9px 14px", fontSize: 11, textDecoration: "none" }}>PDF ↓</a>
-              </div>
-            </div>
-          ))}
-
-          {/* group total tile */}
-          <div className="card" style={{ padding: 24, display: "flex", flexDirection: "column", justifyContent: "center", background: "linear-gradient(150deg,#ff7a4d,#e23c12)", color: "#fff", border: "none" }}>
-            <div style={{ fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 800, opacity: .92 }}>Suma del grupo</div>
-            <div className="money" style={{ fontSize: 40, fontWeight: 900, letterSpacing: "-.02em", marginTop: 8 }}>{fmt2(groupTotal)}</div>
-            <div style={{ fontSize: 13, fontWeight: 600, opacity: .92, marginTop: 6 }}>5 viajeras · COP</div>
-            <div style={{ marginTop: 18, fontSize: 12.5, lineHeight: 1.6, opacity: .9 }}>Incluye estadía, vuelos, entrada al Tayrona, transporte y mercado. Melanie paga menos en vuelo.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+/* CREW vive ahora en sb-crew.jsx (interactivo con Supabase: bolsas + gastos) */
 
 /* ========================= ITINERARIO ========================= */
 function Itinerary() {
@@ -244,4 +178,4 @@ function Footer() {
   );
 }
 
-Object.assign(window, { Crew, Itinerary, Hospedaje, Logistica, Mercado, Footer });
+Object.assign(window, { Itinerary, Hospedaje, Logistica, Mercado, Footer });
