@@ -6,11 +6,12 @@
     <title>Santa Marta & Beyond | Itinerario de Viaje</title>
     <!-- CDN de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- CDN de jsPDF para simular la descarga nativa de PDFs de los tiquetes sin servidor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        /* Configuración de estilos y fuentes personalizados inspirados en image.png */
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #fcf9f5;
@@ -31,24 +32,30 @@
         .accent-pink-retro {
             border-color: #f2a6a6;
         }
-        /* Efecto difuminado floral suave de fondo como en la referencia */
-        .hero-blur {
-            background: linear-gradient(135deg, rgba(203, 220, 163, 0.4), rgba(242, 166, 166, 0.4)), url('https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=1000') no-repeat center center/cover;
+        
+        /* Recreación exacta del gradiente abstracto, floral y desenfocado con estética de la imagen "image.png" */
+        .hero-blur-exact {
+            background: 
+                radial-gradient(circle at 50% 30%, rgba(242, 166, 166, 0.7) 0%, rgba(242, 166, 166, 0) 55%),
+                radial-gradient(circle at 25% 65%, rgba(203, 220, 163, 0.6) 0%, rgba(203, 220, 163, 0) 50%),
+                radial-gradient(circle at 75% 70%, rgba(242, 166, 166, 0.5) 0%, rgba(242, 166, 166, 0) 45%),
+                linear-gradient(180deg, #b3e0f2 0%, #fcf9f5 100%);
+            background-size: cover;
         }
     </style>
 </head>
 <body class="pb-16">
 
-    <!-- Hero Header (Estética Bloom & Beyond de image.png) -->
-    <header class="hero-blur relative h-screen w-full flex flex-col justify-center items-center text-center overflow-hidden px-4">
-        <div class="absolute inset-0 bg-radial from-transparent to-[#fcf9f5]/30 backdrop-blur-[4px] z-10"></div>
+    <!-- Hero Header (Estética exacta de image.png) -->
+    <header class="hero-blur-exact relative h-screen w-full flex flex-col justify-center items-center text-center overflow-hidden px-4">
         <div class="relative z-20 max-w-xl">
             <div class="mb-6">
-                <h1 class="font-retro text-6xl md:text-7xl font-extrabold text-orange-retro uppercase tracking-tighter leading-none">SANTA MARTA</h1>
+                <!-- Logotipo tipográfico orgánico retro inspirado en "Bloom & beyond" -->
+                <h1 class="font-retro text-7xl md:text-8xl font-extrabold text-orange-retro uppercase tracking-tighter leading-none">SANTA</h1>
                 <div class="text-3xl md:text-4xl font-light text-orange-retro tracking-tight -mt-1">& beyond</div>
             </div>
-            <p class="text-sm md:text-base uppercase tracking-widest text-orange-retro font-semibold mt-10 px-4 max-w-md mx-auto leading-relaxed">
-                21 al 24 de junio — Donde la fiesta enciende la costa y la calma absoluta del Tayrona sana el alma. El equilibrio perfecto.
+            <p class="text-xs md:text-sm uppercase tracking-[0.2em] text-orange-retro font-bold mt-16 px-6 max-w-md mx-auto leading-relaxed opacity-90">
+                Aquí, las flores son más que regalos — son pequeñas chispas de conexión. 21 al 24 de junio. Entre la fiesta que enciende la noche y la calma que sana el alma.
             </p>
         </div>
     </header>
@@ -56,29 +63,113 @@
     <!-- Contenedor Principal -->
     <main class="max-w-3xl mx-auto px-6">
         
-        <!-- The Crew -->
+        <!-- Crew & Individual Budgets / Tickets -->
         <section id="crew" class="mt-24">
             <h2 class="font-retro text-4xl font-bold text-orange-retro uppercase tracking-tight">The Crew</h2>
-            <p class="text-gray-500 italic mb-8">5 chicas, cero complicaciones</p>
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 mt-6">
-                <div class="bg-white p-5 rounded-[20px] text-center border border-orange-retro font-semibold text-orange-retro shadow-sm">Male ✨</div>
-                <div class="bg-white p-5 rounded-[20px] text-center border border-orange-retro font-semibold text-orange-retro shadow-sm">Aleja 🥂</div>
-                <div class="bg-white p-5 rounded-[20px] text-center border border-orange-retro font-semibold text-orange-retro shadow-sm">Helen 🌴</div>
-                <div class="bg-white p-5 rounded-[20px] text-center border border-orange-retro font-semibold text-orange-retro shadow-sm">Mela 🌊</div>
-                <div class="bg-white p-5 rounded-[20px] text-center border border-orange-retro font-semibold text-orange-retro shadow-sm">Nata 🌺</div>
+            <p class="text-gray-500 italic mb-8">Nuestros perfiles, presupuestos individuales y tiquetes de vuelo de Avianca asignados.</p>
+            
+            <div class="space-y-6">
+                <!-- MALE -->
+                <div class="bg-white p-6 rounded-[25px] border border-orange-retro shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-retro text-xl font-bold text-orange-retro">Male ✨</h3>
+                        <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Gordillo Alvarez Natalia</p>
+                        <!-- Desglose de presupuesto individual -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 mt-3 text-sm text-gray-600">
+                            <div>🏠 Hospedaje: <span class="font-semibold text-neutral-800">$0</span></div>
+                            <div>🚗 Transporte: <span class="font-semibold text-neutral-800">$68.000</span></div>
+                            <div>🛒 Mercado: <span class="font-semibold text-neutral-800">$54.000</span></div>
+                            <div>🛡️ Colchón: <span class="font-semibold text-orange-retro">$50.000</span></div>
+                        </div>
+                        <div class="text-xs font-bold text-orange-retro mt-2">PRESUPUESTO TOTAL: $172.000 COP</div>
+                    </div>
+                    <button onclick="downloadTicket('Male', 'Gordillo Alvarez Natalia', 'A8R6ML', '134 2156659804')" class="w-full md:w-auto bg-orange-retro text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold hover:opacity-90 transition-all shrink-0 shadow-sm">
+                        Descargar PDF ✈️
+                    </button>
+                </div>
+
+                <!-- ALEJA -->
+                <div class="bg-white p-6 rounded-[25px] border border-orange-retro shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-retro text-xl font-bold text-orange-retro">Aleja 🥂</h3>
+                        <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Chavez Garcia Yohany Alejandra</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 mt-3 text-sm text-gray-600">
+                            <div>🏠 Hospedaje: <span class="font-semibold text-neutral-800">$0</span></div>
+                            <div>🚗 Transporte: <span class="font-semibold text-neutral-800">$68.000</span></div>
+                            <div>🛒 Mercado: <span class="font-semibold text-neutral-800">$54.000</span></div>
+                            <div>🛡️ Colchón: <span class="font-semibold text-orange-retro">$50.000</span></div>
+                        </div>
+                        <div class="text-xs font-bold text-orange-retro mt-2">PRESUPUESTO TOTAL: $172.000 COP</div>
+                    </div>
+                    <button onclick="downloadTicket('Aleja', 'Chavez Garcia Yohany Alejandra', 'A8R6ML', '134 2156659803')" class="w-full md:w-auto bg-orange-retro text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold hover:opacity-90 transition-all shrink-0 shadow-sm">
+                        Descargar PDF ✈️
+                    </button>
+                </div>
+
+                <!-- HELEN -->
+                <div class="bg-white p-6 rounded-[25px] border border-orange-retro shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-retro text-xl font-bold text-orange-retro">Helen 🌴</h3>
+                        <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Baron Romero Helen Sofia</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 mt-3 text-sm text-gray-600">
+                            <div>🏠 Hospedaje: <span class="font-semibold text-neutral-800">$0</span></div>
+                            <div>🚗 Transporte: <span class="font-semibold text-neutral-800">$68.000</span></div>
+                            <div>🛒 Mercado: <span class="font-semibold text-neutral-800">$54.000</span></div>
+                            <div>🛡️ Colchón: <span class="font-semibold text-orange-retro">$50.000</span></div>
+                        </div>
+                        <div class="text-xs font-bold text-orange-retro mt-2">PRESUPUESTO TOTAL: $172.000 COP</div>
+                    </div>
+                    <button onclick="downloadTicket('Helen', 'Baron Romero Helen Sofia', 'A8R6ML', '134 2156659802')" class="w-full md:w-auto bg-orange-retro text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold hover:opacity-90 transition-all shrink-0 shadow-sm">
+                        Descargar PDF ✈️
+                    </button>
+                </div>
+
+                <!-- MELA -->
+                <div class="bg-white p-6 rounded-[25px] border border-orange-retro shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-retro text-xl font-bold text-orange-retro">Mela 🌊</h3>
+                        <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Pasajera 4</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 mt-3 text-sm text-gray-600">
+                            <div>🏠 Hospedaje: <span class="font-semibold text-neutral-800">$0</span></div>
+                            <div>🚗 Transporte: <span class="font-semibold text-neutral-800">$68.000</span></div>
+                            <div>🛒 Mercado: <span class="font-semibold text-neutral-800">$54.000</span></div>
+                            <div>🛡️ Colchón: <span class="font-semibold text-orange-retro">$50.000</span></div>
+                        </div>
+                        <div class="text-xs font-bold text-orange-retro mt-2">PRESUPUESTO TOTAL: $172.000 COP</div>
+                    </div>
+                    <button onclick="downloadTicket('Mela', 'Pasajera Mela S.', 'A8R6ML', 'Generando...')" class="w-full md:w-auto bg-orange-retro text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold hover:opacity-90 transition-all shrink-0 shadow-sm">
+                        Descargar PDF ✈️
+                    </button>
+                </div>
+
+                <!-- NATA -->
+                <div class="bg-white p-6 rounded-[25px] border border-orange-retro shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-retro text-xl font-bold text-orange-retro">Nata 🌺</h3>
+                        <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Pasajera 5</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 mt-3 text-sm text-gray-600">
+                            <div>🏠 Hospedaje: <span class="font-semibold text-neutral-800">$0</span></div>
+                            <div>🚗 Transporte: <span class="font-semibold text-neutral-800">$68.000</span></div>
+                            <div>🛒 Mercado: <span class="font-semibold text-neutral-800">$54.000</span></div>
+                            <div>🛡️ Colchón: <span class="font-semibold text-orange-retro">$50.000</span></div>
+                        </div>
+                        <div class="text-xs font-bold text-orange-retro mt-2">PRESUPUESTO TOTAL: $172.000 COP</div>
+                    </div>
+                    <button onclick="downloadTicket('Nata', 'Pasajera Nata V.', 'A8R6ML', 'Generando...')" class="w-full md:w-auto bg-orange-retro text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold hover:opacity-90 transition-all shrink-0 shadow-sm">
+                        Descargar PDF ✈️
+                    </button>
+                </div>
             </div>
         </section>
 
         <!-- Ubicación Base -->
         <section id="hospedaje" class="mt-24">
             <h2 class="font-retro text-4xl font-bold text-orange-retro uppercase tracking-tight">Nuestra Base</h2>
-            <p class="text-gray-500 italic mb-8">El punto de encuentro y descanso</p>
+            <p class="text-gray-500 italic mb-8">Alojamiento reservado</p>
             <div class="bg-white p-8 rounded-[25px] border border-orange-retro shadow-sm">
                 <h3 class="font-retro text-xl font-bold text-orange-retro mb-2">Reserva del Mar 2</h3>
-                <p class="text-gray-600 font-medium">📍 Carrera 2 #20-134 Reservas Del Mar 2, Gaira, Magdalena</p>
-                <p class="text-sm text-gray-500 mt-4 border-t border-dashed border-gray-100 pt-4">
-                    Desde aquí nos moveremos hacia la calma mística del Tayrona y los mejores spots nocturnos de la zona.
-                </p>
+                <p class="text-gray-600 font-medium">📍 Carrera 2 #20-134 Reservas Del Mar 2, Gaira, Magdalena 470006</p>
+                <p class="text-sm text-neutral-400 mt-1 font-semibold">Costo Total Hospedaje: Cubierto / Incluido en la base previa</p>
             </div>
         </section>
 
@@ -88,155 +179,159 @@
             <p class="text-gray-500 italic mb-8">Conexión total con la naturaleza y regreso con ritmo</p>
             
             <div class="relative pl-6 border-l-2 accent-pink-retro space-y-10">
-                <!-- Item 1 -->
                 <div class="relative">
                     <div class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-orange-retro border-4 border-[#fcf9f5]"></div>
                     <span class="font-retro text-lg text-orange-retro font-bold block mb-1">05:30 AM — Salida de Reserva del Mar 2</span>
                     <h4 class="text-xl font-semibold mb-2 text-neutral-800">Camino hacia el paraíso salvaje</h4>
-                    <p class="text-gray-600 leading-relaxed">Nos subimos a nuestro transporte privado directo desde el edificio en Gaira. Llevamos ropa cómoda, vestidos de baño puestos, bloqueador y agua fresca para el trayecto.</p>
+                    <p class="text-gray-600 leading-relaxed">Nos subimos a nuestra van privada directo desde el edificio en Gaira.</p>
                 </div>
 
-                <!-- Item 2 -->
                 <div class="relative">
                     <div class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-orange-retro border-4 border-[#fcf9f5]"></div>
                     <span class="font-retro text-lg text-orange-retro font-bold block mb-1">07:00 AM — Registro en Taquilla El Zaino</span>
                     <h4 class="text-xl font-semibold mb-2 text-neutral-800">Ingreso al Parque Nacional Natural Tayrona</h4>
-                    <p class="text-gray-600 leading-relaxed">📍 Km 26+400 Vías Parque Nacional Tayrona. Compramos las entradas, el seguro obligatorio y tomamos la microbuseta interna obligatoria que nos adelanta hasta el inicio real del sendero (Cañaveral).</p>
+                    <p class="text-gray-600 leading-relaxed">📍 Vías Parque Nacional Tayrona Km 26+400, Santa Marta, Magdalena 470007. Registro y microbús hacia Cañaveral.</p>
                 </div>
 
-                <!-- Item 3 -->
                 <div class="relative">
                     <div class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-orange-retro border-4 border-[#fcf9f5]"></div>
                     <span class="font-retro text-lg text-orange-retro font-bold block mb-1">07:45 AM — La Caminata de las Palmeras</span>
                     <h4 class="text-xl font-semibold mb-2 text-neutral-800">Senderismo místico y calma tropical</h4>
-                    <p class="text-gray-600 leading-relaxed">Iniciamos el sendero ecológico. Una caminata respirando el aire de la selva y cruzando los icónicos senderos de madera. Ritmo suave, risas y fotos aesthetic entre la naturaleza.</p>
+                    <p class="text-gray-600 leading-relaxed">Risas, senderos verdes y desconexión absoluta.</p>
                 </div>
 
-                <!-- Item 4 -->
-                <div class="relative">
-                    <div class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-orange-retro border-4 border-[#fcf9f5]"></div>
-                    <span class="font-retro text-lg text-orange-retro font-bold block mb-1">09:45 AM — Baño de Sol en La Piscina</span>
-                    <h4 class="text-xl font-semibold mb-2 text-neutral-800">Flotar en aguas cristalinas</h4>
-                    <p class="text-gray-600 leading-relaxed">Llegamos a una de las playas más calmadas y seguras para nadar. Nos refrescamos del camino, flotamos un rato en el mar tranquilo y disfrutamos el breakdown del día.</p>
-                </div>
-
-                <!-- Item 5 -->
                 <div class="relative">
                     <div class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-orange-retro border-4 border-[#fcf9f5]"></div>
                     <span class="font-retro text-lg text-orange-retro font-bold block mb-1">11:45 AM — El Altar de la Playa</span>
-                    <h4 class="text-xl font-semibold mb-2 text-neutral-800">Almuerzo y tarde libre en Cabo San Juan</h4>
-                    <p class="text-gray-600 leading-relaxed">Llegada al spot más famoso. Tiempo para almorzar comida local frente al mar, subir al mirador emblemático para la foto grupal y pasar la tarde descansando bajo la brisa caribeña.</p>
+                    <h4 class="text-xl font-semibold mb-2 text-neutral-800">Almuerzo y tarde en Cabo San Juan</h4>
+                    <p class="text-gray-600 leading-relaxed">Disfrutar de la brisa, mar cristalino y atardecer caribeño.</p>
                 </div>
 
-                <!-- Item 6 -->
-                <div class="relative">
-                    <div class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-orange-retro border-4 border-[#fcf9f5]"></div>
-                    <span class="font-retro text-lg text-orange-retro font-bold block mb-1">03:30 PM — Empezando el Retorno</span>
-                    <h4 class="text-xl font-semibold mb-2 text-neutral-800">Caminata dorada hacia la salida</h4>
-                    <p class="text-gray-600 leading-relaxed">Emprendemos el camino de regreso hacia Cañaveral mientras el sol baja y el cielo empieza a cambiar de color, preparando la energía de la noche.</p>
-                </div>
-
-                <!-- Item 7 -->
-                <div class="relative">
-                    <div class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-orange-retro border-4 border-[#fcf9f5]"></div>
-                    <span class="font-retro text-lg text-orange-retro font-bold block mb-1">05:30 PM — Regreso a Casa</span>
-                    <h4 class="text-xl font-semibold mb-2 text-neutral-800">Van privada de vuelta a Gaira</h4>
-                    <p class="text-gray-600 leading-relaxed">Nuestro conductor nos espera en la entrada de El Zaino. Hora de descansar las piernas en el camino de vuelta y ponernos de acuerdo para el outfit de la noche.</p>
-                </div>
-
-                <!-- Item 8 -->
                 <div class="relative">
                     <div class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-orange-retro border-4 border-[#fcf9f5]"></div>
                     <span class="font-retro text-lg text-orange-retro font-bold block mb-1">08:30 PM — Sunsets, Beats & Drinks</span>
-                    <h4 class="text-xl font-semibold mb-2 text-neutral-800">Cena y Pre-party con estilo</h4>
-                    <p class="text-gray-600 leading-relaxed">Nos arreglamos en el apartamento, destapamos algo de tomar del mercado y salimos por unos buenos cócteles y música en un rooftop cool del Centro o cerca al Rodadero para cerrar el día con toda la actitud.</p>
+                    <h4 class="text-xl font-semibold mb-2 text-neutral-800">Pre-party & Fiesta</h4>
+                    <p class="text-gray-600 leading-relaxed">Cócteles y buena música para celebrar el viaje juntas.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Presupuesto de Transporte -->
+        <!-- Presupuesto Consolidado de Transporte -->
         <section id="transporte" class="mt-24">
             <h2 class="font-retro text-4xl font-bold text-orange-retro uppercase tracking-tight">Logística y Transporte</h2>
-            <p class="text-gray-500 italic mb-8">Valores estimados de traslado para las 5 chicas</p>
+            <p class="text-gray-500 italic mb-8">Valores de traslado grupal</p>
             
             <div class="bg-white p-6 md:p-10 rounded-[30px] border border-orange-retro shadow-sm">
-                <div class="mb-6">
-                    <h3 class="font-retro text-lg text-orange-retro uppercase mb-4 tracking-wider">Detalle de Movilización (Ida y Vuelta)</h3>
-                    <ul class="space-y-4">
-                        <li class="pb-4 border-b border-dashed border-gray-100 flex justify-between items-center gap-4">
-                            <div>
-                                <span class="font-medium text-neutral-800 block">Van Privada (Reserva del Mar 2 ⇄ Taquilla El Zaino)</span>
-                                <small class="text-gray-400">Cómodas, con aire y directo para las 5 sin esperas</small>
-                            </div>
-                            <span class="font-semibold text-orange-retro shrink-0">$260.000 COP</span>
-                        </li>
-                        <li class="pb-4 border-b border-dashed border-gray-100 flex justify-between items-center gap-4">
-                            <div>
-                                <span class="font-medium text-neutral-800 block">Buseta Interna Obligatoria (Taquilla Zaino ⇄ Cañaveral)</span>
-                                <small class="text-gray-400">$5.000 por persona cada trayecto</small>
-                            </div>
-                            <span class="font-semibold text-orange-retro shrink-0">$50.000 COP</span>
-                        </li>
-                        <li class="pb-4 border-b border-dashed border-gray-100 flex justify-between items-center gap-4">
-                            <div>
-                                <span class="font-medium text-neutral-800 block">Seguro Médico Obligatorio del Parque</span>
-                                <small class="text-gray-400">$6.000 por persona por día</small>
-                            </div>
-                            <span class="font-semibold text-orange-retro shrink-0">$30.000 COP</span>
-                        </li>
-                    </ul>
-                    <div class="font-retro text-xl text-orange-retro text-right mt-6 pt-4 border-t-2 accent-pink-retro">
-                        Total Transporte & Seguros del día: $340.000 COP <br>
-                        <span class="text-sm font-sans font-normal text-gray-500 block mt-1">(Aprox. $68.000 COP por cada una)</span>
-                    </div>
+                <h3 class="font-retro text-lg text-orange-retro uppercase mb-4 tracking-wider">Detalle del día en Tayrona</h3>
+                <ul class="space-y-4">
+                    <li class="pb-4 border-b border-dashed border-gray-100 flex justify-between items-center">
+                        <div>
+                            <span class="font-medium text-neutral-800 block">Van Privada (Reserva del Mar 2 ⇄ El Zaino)</span>
+                            <small class="text-gray-400">Ida y vuelta exclusivo para las 5</small>
+                        </div>
+                        <span class="font-semibold text-orange-retro">$260.000 COP</span>
+                    </li>
+                    <li class="pb-4 border-b border-dashed border-gray-100 flex justify-between items-center">
+                        <div>
+                            <span class="font-medium text-neutral-800 block">Buseta Interna Obligatoria</span>
+                            <small class="text-gray-400">$5.000 por trayecto por persona</small>
+                        </div>
+                        <span class="font-semibold text-orange-retro">$50.000 COP</span>
+                    </li>
+                    <li class="pb-4 border-b border-dashed border-gray-100 flex justify-between items-center">
+                        <div>
+                            <span class="font-medium text-neutral-800 block">Seguro Médico Parque</span>
+                            <small class="text-gray-400">$6.000 por persona</small>
+                        </div>
+                        <span class="font-semibold text-orange-retro">$30.000 COP</span>
+                    </li>
+                </ul>
+                <div class="font-retro text-xl text-orange-retro text-right mt-6 pt-4 border-t-2 accent-pink-retro">
+                    Total Transporte: $340.000 COP
+                    <span class="text-sm font-sans font-normal text-gray-500 block mt-1">($68.000 COP por persona)</span>
                 </div>
             </div>
         </section>
 
-        <!-- Lista de Mercado -->
+        <!-- Lista de Mercado & Presupuesto -->
         <section id="market" class="mt-24">
-            <h2 class="font-retro text-4xl font-bold text-orange-retro uppercase tracking-tight">Mini Mercado Consistente</h2>
-            <p class="text-gray-500 italic mb-8">Lo esencial y rico para tener en Reserva del Mar 2</p>
+            <h2 class="font-retro text-4xl font-bold text-orange-retro uppercase tracking-tight">Mercado & Snacks</h2>
+            <p class="text-gray-500 italic mb-8">Presupuesto total mercado: $270.000 COP ($54.000 COP por persona)</p>
             
             <div class="bg-white p-6 md:p-10 rounded-[30px] border border-orange-retro shadow-sm space-y-8">
-                <!-- Categoria 1 -->
                 <div>
-                    <h3 class="font-retro text-base text-orange-retro uppercase mb-3 tracking-wider">Morning Glow (Desayunos y Energía)</h3>
+                    <h3 class="font-retro text-base text-orange-retro uppercase mb-3 tracking-wider">Morning Glow & Hydration</h3>
                     <ul class="space-y-3">
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Café local de la Sierra Nevada</span><span class="text-sm font-semibold text-gray-500">1 Paquete</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Leche de almendras o entera</span><span class="text-sm font-semibold text-gray-500">2 Litros</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Granola artesanal con frutos secos</span><span class="text-sm font-semibold text-gray-500">1 Bolsa grande</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Frutas para las mañanas (Bananos y sandía)</span><span class="text-sm font-semibold text-gray-500">Variado</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Huevos frescos</span><span class="text-sm font-semibold text-gray-500">1 Panal (30 u.)</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Pan tajado artesanal</span><span class="text-sm font-semibold text-gray-500">1 Paquete grande</span></li>
-                    </ul>
-                </div>
-
-                <!-- Categoria 2 -->
-                <div>
-                    <h3 class="font-retro text-base text-orange-retro uppercase mb-3 tracking-wider">Hydration & Pre-Party (Esenciales)</h3>
-                    <ul class="space-y-3">
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Agua mineral (Crucial para Tayrona)</span><span class="text-sm font-semibold text-gray-500">2 Pacas grandes</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Sueros hidratantes post-fiesta</span><span class="text-sm font-semibold text-gray-500">5 Botellas</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Cervezas locales frías para la tarde</span><span class="text-sm font-semibold text-gray-500">2 Six-packs</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Ginebra, Aguardiente o Mezcal (Para el pre)</span><span class="text-sm font-semibold text-gray-500">1-2 Botellas</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Tónicas, limones y bolsas de hielo</span><span class="text-sm font-semibold text-gray-500">Suficiente</span></li>
-                    </ul>
-                </div>
-
-                <!-- Categoria 3 -->
-                <div>
-                    <h3 class="font-retro text-base text-orange-retro uppercase mb-3 tracking-wider">Munchies & Calma (Para picar en el apto)</h3>
-                    <ul class="space-y-3">
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Chips de platanitos y papas de limón</span><span class="text-sm font-semibold text-gray-500">3 Bolsas grandes</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Queso crema o Hummus para dipear</span><span class="text-sm font-semibold text-gray-500">2 Envases</span></li>
-                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Chocolates con sal marina para la noche</span><span class="text-sm font-semibold text-gray-500">2 Barras</span></li>
+                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Café local, Leche de almendras, Granola y Huevos</span><span class="text-sm font-semibold text-gray-500">Esenciales</span></li>
+                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Aguas minerales (2 pacas) y Sueros post-fiesta</span><span class="text-sm font-semibold text-gray-500">Vital</span></li>
+                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Licores para el pre (Ginebra/Mezcal/Cervezas) + Hielo</span><span class="text-sm font-semibold text-gray-500">Party</span></li>
+                        <li class="pb-2 border-b border-dashed border-gray-100 flex justify-between items-center"><span class="text-gray-700">🌸 Munchies (Chips de plátano, papas, hummus, chocolates)</span><span class="text-sm font-semibold text-gray-500 text-orange-retro">Chill</span></li>
                     </ul>
                 </div>
             </div>
         </section>
 
     </main>
+
+    <!-- Script para generar y descargar dinámicamente el tiquete en PDF original usando la información provista -->
+    <script>
+        function downloadTicket(nickname, fullName, ref, ticketNum) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont("Helvetica", "bold");
+            doc.setFontSize(22);
+            doc.setTextColor(230, 92, 43);
+            doc.text("avianca", 20, 25);
+            doc.setFontSize(9);
+            doc.setTextColor(120, 120, 120);
+            doc.text("A STAR ALLIANCE MEMBER", 20, 30);
+            
+            doc.setDrawColor(242, 166, 166);
+            doc.line(20, 35, 190, 35);
+            
+            doc.setFontSize(11);
+            doc.setTextColor(40, 40, 40);
+            doc.text(`PASAJERO(A): ${fullName.toUpperCase()} (${nickname})`, 20, 45);
+            doc.text(`CODIGO DE RESERVA: ${ref}`, 20, 52);
+            doc.text(`NUMERO DE TIQUETE: ${ticketNum}`, 20, 59);
+            
+            doc.setFillColor(252, 237, 237);
+            doc.rect(20, 68, 170, 38, "F");
+
+            doc.setFont("Helvetica", "bold");
+            doc.text("IDA: BOGOTÁ (BOG) -> SANTA MARTA (SMR)", 25, 76);
+            doc.setFont("Helvetica", "normal");
+            doc.text("Vuelo: AV4822  |  Clase: BASIC  |  Equipaje: 0PC (Artículo Personal)", 25, 83);
+            doc.text("Salida: 21 Jun 2026 — 19:00 (Terminal 1)", 25, 90);
+            doc.text("Llegada: 21 Jun 2026 — 20:35", 25, 97);
+            
+            doc.setFillColor(245, 248, 237);
+            doc.rect(20, 114, 170, 38, "F");
+
+            doc.setFont("Helvetica", "bold");
+            doc.text("REGRESO: SANTA MARTA (SMR) -> BOGOTÁ (BOG)", 25, 122);
+            doc.setFont("Helvetica", "normal");
+            doc.text("Vuelo: AV8507  |  Clase: BASIC  |  Equipaje: 0PC (Artículo Personal)", 25, 129);
+            doc.text("Salida: 24 Jun 2026 — 19:20", 25, 136);
+            doc.text("Llegada: 24 Jun 2026 — 20:55 (Terminal 1)", 25, 143);
+            
+            doc.line(20, 162, 190, 162);
+            doc.setFont("Helvetica", "bold");
+            doc.text("INFORMACIÓN DE TARIFA IMPORTANTE", 20, 172);
+            doc.setFont("Helvetica", "normal");
+            doc.setFontSize(9);
+            doc.text("* La tarifa BASIC solo permite un artículo personal (morral) debajo del asiento.", 20, 180);
+            doc.text("* Cualquier pieza de equipaje de mano en bodega o cabina alta tendrá cobro extra.", 20, 186);
+            doc.text("* Recuerda presentarte con tu documento de identidad físico en el aeropuerto.", 20, 192);
+            
+            doc.setFontSize(11);
+            doc.setFont("Helvetica", "bold");
+            doc.text("VALOR PAGADO TOTAL: $256.650 COP", 20, 206);
+            
+            doc.save(`Tiquete_Avianca_${nickname}_SantaMarta.pdf`);
+        }
+    </script>
 
 </body>
 </html>
