@@ -2,6 +2,26 @@
 const { useState: itS, useEffect: itE } = React;
 const ITSB = window.SB;
 
+/* Convierte una hora en texto libre ("8–9 am", "10–1 pm", "5:00 pm", "—") a minutos
+   desde medianoche para poder ordenar. Sin hora reconocible → Infinity (va al final). */
+function itHoraMin(str) {
+  if (!str) return Infinity;
+  const s = String(str).toLowerCase();
+  const M = /p\.?\s*m/.test(s) ? "pm" : (/a\.?\s*m/.test(s) ? "am" : null);
+  const nums = [...s.matchAll(/(\d{1,2})(?::(\d{2}))?/g)];
+  if (!nums.length) return Infinity;
+  let h = parseInt(nums[0][1], 10);
+  const min = nums[0][2] ? parseInt(nums[0][2], 10) : 0;
+  let mer = M;
+  if (nums.length >= 2 && M) {                       // rango: el am/pm está al final
+    const b = parseInt(nums[1][1], 10);
+    mer = (h % 12) <= (b % 12) ? M : (M === "pm" ? "am" : "pm");
+  }
+  if (mer === "pm" && h < 12) h += 12;
+  if (mer === "am" && h === 12) h = 0;
+  return h * 60 + min;
+}
+
 function Itinerary() {
   const days = ITSB.days;
   const [sel, setSel] = itS(0);
@@ -26,9 +46,12 @@ function Itinerary() {
     });
   const customStops = custom
     .filter(c => c.day_id === day.id)
-    .sort((a, b) => (a.position || 0) - (b.position || 0))
     .map(c => ({ id: c.stop_id, time: c.time, head: c.head, body: c.body, custom: true }));
-  const stops = baseStops.concat(customStops);
+  // orden automático por hora de inicio (estable; las sin hora quedan al final)
+  const stops = baseStops.concat(customStops)
+    .map((s, idx) => ({ s, idx, t: itHoraMin(s.time) }))
+    .sort((a, b) => a.t - b.t || a.idx - b.idx)
+    .map(x => x.s);
 
   const load = async () => {
     if (!window.SB_DB) { setDbErr(true); return; }
