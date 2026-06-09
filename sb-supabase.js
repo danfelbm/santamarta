@@ -88,5 +88,43 @@ window.SB_DB = (function () {
         return () => {};
       }
     },
+
+    // ---- Itinerario (paradas editables) ----
+    async itinerarioList() {
+      const { data, error } = await client.from("itinerario").select("*");
+      if (error) throw error;
+      return data || [];
+    },
+    async itinerarioUpsert(stop_id, fields) {
+      const { error } = await client
+        .from("itinerario")
+        .upsert({ stop_id, ...fields, updated_at: new Date().toISOString() });
+      if (error) throw error;
+    },
+    async itinerarioAdd(item) {
+      const id = "i-" + (window.crypto && window.crypto.randomUUID
+        ? window.crypto.randomUUID()
+        : Date.now() + "-" + Math.round(Math.random() * 1e6));
+      const { error } = await client.from("itinerario").insert({
+        stop_id: id, custom: true, hidden: false,
+        day_id: item.day_id, hora: item.hora, head: item.head, body: item.body, position: item.position,
+      });
+      if (error) throw error;
+    },
+    async itinerarioRemove(stop_id) {
+      const { error } = await client.from("itinerario").delete().eq("stop_id", stop_id);
+      if (error) throw error;
+    },
+    itinerarioOnChange(cb) {
+      try {
+        const ch = client
+          .channel("itinerario-rt")
+          .on("postgres_changes", { event: "*", schema: "public", table: "itinerario" }, cb)
+          .subscribe();
+        return () => client.removeChannel(ch);
+      } catch (e) {
+        return () => {};
+      }
+    },
   };
 })();

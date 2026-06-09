@@ -10,59 +10,7 @@ const GRAD = {
 
 /* CREW vive ahora en sb-crew.jsx (interactivo con Supabase: bolsas + gastos) */
 
-/* ========================= ITINERARIO ========================= */
-function Itinerary() {
-  const days = SB2.days;
-  const [sel, setSel] = React.useState(0);
-  const day = days[sel];
-  return (
-    <section id="itinerario" className="section-pad" style={{ background: "linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 100%)" }}>
-      <div className="wrap">
-        <div className="reveal" style={{ marginBottom: 36 }}>
-          <div className="eyebrow">21 — 24 de junio · 4 días</div>
-          <h2 className="sec-title">Itinerario</h2>
-          <p className="sec-sub">El plan completo día por día: de la llegada a Gaira y la gran ruta al Tayrona, a la calma en la ciudad y el regreso con el alma llena.</p>
-        </div>
-
-        {/* day tabs */}
-        <div className="reveal" style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 28 }}>
-          {days.map((d, i) => (
-            <button key={d.id} onClick={() => setSel(i)}
-              style={{ cursor: "pointer", border: "1px solid", borderColor: sel === i ? "transparent" : "var(--line)",
-                background: sel === i ? "linear-gradient(180deg,#ff5a2c,#e23c12)" : "rgba(255,255,255,.6)",
-                color: sel === i ? "#fff" : "var(--ink-soft)", borderRadius: 16, padding: "12px 18px", textAlign: "left",
-                transition: "all .25s", boxShadow: sel === i ? "0 10px 24px rgba(226,60,18,.28)" : "none", minWidth: 120, fontFamily: "inherit" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", opacity: .9 }}>{d.dow}</div>
-              <div style={{ fontWeight: 800, fontSize: 19, marginTop: 2, letterSpacing: "-.01em" }}>{d.date}</div>
-            </button>
-          ))}
-        </div>
-
-        {/* day panel */}
-        <div className="reveal card" style={{ padding: "30px clamp(20px,4vw,40px)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28, flexWrap: "wrap" }}>
-            <h3 style={{ margin: 0, fontWeight: 800, fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-.01em" }}>{day.title}</h3>
-            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--coral-deep)", background: "rgba(255,90,44,.1)", padding: "5px 12px", borderRadius: 99 }}>{day.tag}</span>
-          </div>
-
-          <div style={{ position: "relative", paddingLeft: 8 }}>
-            {day.stops.map((s, i) => (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "78px 1fr", gap: 18, paddingBottom: i < day.stops.length - 1 ? 26 : 0 }}>
-                <div className="money" style={{ fontWeight: 800, fontSize: 15, color: "var(--coral-deep)", textAlign: "right", paddingTop: 1 }}>{s.time}</div>
-                <div style={{ position: "relative", paddingLeft: 26, paddingBottom: 2 }}>
-                  <span style={{ position: "absolute", left: 0, top: 4, width: 13, height: 13, borderRadius: 99, background: "#fff", border: "3px solid var(--coral)", zIndex: 1 }} />
-                  {i < day.stops.length - 1 && <span style={{ position: "absolute", left: 6, top: 16, bottom: -26, width: 2, background: "linear-gradient(var(--coral), rgba(255,90,44,.2))" }} />}
-                  <div style={{ fontWeight: 700, fontSize: 16.5, color: "var(--ink)" }}>{s.head}</div>
-                  <div style={{ fontSize: 13.5, color: "var(--ink-soft)", marginTop: 4, lineHeight: 1.55, maxWidth: "62ch" }}>{s.body}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+/* ITINERARIO vive ahora en sb-itinerario.jsx (editable con Supabase) */
 
 /* ========================= HOSPEDAJE ========================= */
 function Hospedaje() {
@@ -157,4 +105,4 @@ function Footer() {
   );
 }
 
-Object.assign(window, { Itinerary, Hospedaje, Logistica, Footer });
+Object.assign(window, { Hospedaje, Logistica, Footer });

@@ -67,3 +67,37 @@ begin
   alter publication supabase_realtime add table public.mercado;
 exception when duplicate_object then null;
 end $$;
+
+
+-- ============================================================
+-- Itinerario editable (sección "Itinerario")
+-- ============================================================
+create table if not exists public.itinerario (
+  stop_id    text primary key,            -- d1-0 (override de base) o i-<uuid> (parada nueva)
+  day_id     text,                         -- d1..d4 (solo paradas nuevas)
+  hora       text,
+  head       text,
+  body       text,
+  hidden     boolean not null default false,
+  custom     boolean not null default false,
+  position   double precision,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.itinerario enable row level security;
+
+drop policy if exists "itinerario_select" on public.itinerario;
+drop policy if exists "itinerario_insert" on public.itinerario;
+drop policy if exists "itinerario_update" on public.itinerario;
+drop policy if exists "itinerario_delete" on public.itinerario;
+
+create policy "itinerario_select" on public.itinerario for select using (true);
+create policy "itinerario_insert" on public.itinerario for insert with check (true);
+create policy "itinerario_update" on public.itinerario for update using (true) with check (true);
+create policy "itinerario_delete" on public.itinerario for delete using (true);
+
+do $$
+begin
+  alter publication supabase_realtime add table public.itinerario;
+exception when duplicate_object then null;
+end $$;
